@@ -249,8 +249,16 @@ function checkFalling() {
 // key, which should allow her to jump higher so long as currentJumpTime is greater
 // than 0.
 function checkJumping() {
-
+  if (player.velocity.y < 0){
+      player.changeAnimation("jump");
+      if (keyIsDown(UP_ARROW)&& currentJumpTime > 0){
+        player.velocity.y=currentJumpForce;
+        deltaMillis= new Date();
+        currentJumpTime-= deltaMillis-millis;
+      }
+  }
 }
+
 
 // Check if the player is moving left or right. If so, move the player character
 // left or right according to DEFAULT_VELOCITY. Also be sure to mirror the
@@ -279,7 +287,11 @@ player.velocity.x =+ DEFAULT_VELOCITY;
 // this should initiate the jump sequence, which can be extended by holding down
 // the up arrow key (see checkJumping() above).
 function keyPressed() {
-
+  if (keyCode===UP_ARROW && playerGrounded){
+    playerGrounded=false;
+    player.velocity.y=currentJumpForce;
+    millis= new Date();
+  }
 }
 
 // Check if the player has released the up arrow key. If the player's y velocity
